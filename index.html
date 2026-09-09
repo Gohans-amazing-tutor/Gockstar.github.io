@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GG links</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    
+    <style>
+        body {
+            margin: 0; 
+            padding: 0; 
+            background-color: black; 
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,0) 2px), 
+                radial-gradient(white, rgba(255,255,255,0) 1px);
+            background-size: 150px 150px, 75px 75px; 
+            background-position: 0 0, 37px 37px;
+            overflow: hidden; 
+        }
+
+        #intro-screen {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            background-color: black; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            z-index: 9999; 
+            transition: opacity 1s ease;
+        }
+
+        #intro-screen img { 
+            max-width: 300px; 
+            opacity: 0; 
+            animation: fadeLogo 3s ease forwards; 
+        }
+
+        @keyframes fadeLogo { 
+            0% { opacity: 0; } 
+            30% { opacity: 1; } 
+            70% { opacity: 1; } 
+            100% { opacity: 0; } 
+        }
+
+        #main-content { 
+            opacity: 0; 
+            transition: opacity 1.5s ease; 
+        }
+
+        header { 
+            text-align: center; 
+            padding: 40px 20px; 
+            border-bottom: 2px solid white; 
+            background-color: black; 
+        }
+        
+        header img { 
+            max-width: 150px; 
+            height: auto; 
+        }
+        
+        h1 { 
+            text-transform: uppercase; 
+            letter-spacing: 5px; 
+            margin-top: 15px; 
+        }
+
+        .container { 
+            max-width: 900px; 
+            margin: 40px auto; 
+            padding: 0 20px; 
+        }
+        
+        h2 { 
+            border-bottom: 1px dashed white; 
+            padding-bottom: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 50px; 
+        }
+
+        .game-box {
+            border: 2px solid white; 
+            background-color: black; 
+            padding: 20px 10px; 
+            text-align: center;
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            text-transform: uppercase; 
+            font-weight: bold;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+        }
+
+        .game-box:hover { 
+            background-color: white; 
+            color: black; 
+        }
+        
+        .game-img {
+            max-width: 100%; 
+            height: 150px; 
+            object-fit: cover; 
+            margin-bottom: 15px;
+            border: 1px solid white; 
+            transition: all 0.3s ease;
+        }
+
+        /* --- NEW STYLES FOR THE IN-PAGE GAME PLAYER --- */
+        #game-player-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            /* Start hidden below the screen */
+            transform: translateY(100%);
+            /* Smooth slide up animation */
+            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        #game-player-overlay.active {
+            /* Slide up into view */
+            transform: translateY(0);
+        }
+
+        #close-game-btn {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            border-bottom: 2px solid black;
+            transition: background-color 0.3s ease;
+        }
+
+        #close-game-btn:hover {
+            background-color: red;
+            color: white;
+        }
+
+        #game-iframe {
+            flex-grow: 1;
+            width: 100%;
+            border: none;
+            background-color: #111;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Intro Animation Screen -->
+    <div id="intro-screen">
+        <img src="logo.png" alt="GG links Intro Logo">
+    </div>
+
+    <!-- Main Website Content -->
+    <div id="main-content">
+        <header>
+            <img src="logo.png" alt="GG links Logo">
+            <h1>GG links</h1>
+            <p>Best site for UBG links</p>
+        </header>
+
+        <div class="container">
+            <h2>Free Links</h2>
+            <div id="free-games" class="grid">
+                <!-- Javascript will inject games here -->
+            </div>
+
+            <h2>Paid Links</h2>
+            <div id="paid-games" class="grid">
+                <!-- Javascript will inject games here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: In-Page Game Player Overlay -->
+    <div id="game-player-overlay">
+        <button id="close-game-btn">⬇ Close Game ⬇</button>
+        <iframe id="game-iframe" src="" allowfullscreen></iframe>
+    </div>
+
+    <!-- JSON DATA AT THE BOTTOM -->
+    <script id="gameDataJSON" type="application/json">
+    {
+      "free": [
+        { "name": "Freeznova", "url": "https://d3tecwpbnz01jy.cloudfront.net/", "image": "https://media.licdn.com/dms/image/v2/D4D0BAQFY8-rOF9qbXQ/company-logo_200_200/company-logo_200_200/0/1729458763741/freezenova_logo?e=2147483647&v=beta&t=WnOAdBPiYwZ4IcRvatBM-zghDdNuUyAxvyA78dR_sOg" },
+        { "name": "Gohan's Tutoring", "url": "https://gohans-amazing-tutor.github.io/Gohans-Tutoring/", "image": "https://raw.githubusercontent.com/Gohans-amazing-tutor/unblocked-games/refs/heads/main/Screenshot%202026-09-09%2012.02.21%20AM.png" },
+        { "name": "Cine os", "url": "https://cineosweb.github.io", "image": "https://raw.githubusercontent.com/Gohans-amazing-tutor/unblocked-games/refs/heads/main/Screenshot%202026-09-08%2011.44.14%20PM.png" },
+        { "name": "Classroom games", "url": "https://dnrweqffuwjtx.cloudfront.net/", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAY1BMVEVHcEwYAjYgAzYjCDYjCTYYAjYWATcWAjYVATcRATetmCP/7gwgAjYMADfIsCH/4BL/8QogAzYFADcVADf/5hD/6w69pSN+ay2qkyeQfCtXRjK1oCVkUjBOOzOYgyomDDbgxhx2DIuJAAAAEXRSTlMAvZrxgSU1iw1QBmwRz5Yalt8Da0EAAAB8SURBVBiVnY/bEoIwDERToA0Fb2mTXkDF//9KKRfHYXxy385Okt0A/Ku2adovtIpmKbuSrgqRd85TpQGQVo5jejgiLOu192ViymE/dM9uVh7xtkVE4RBYXthfF6MbmEVYAvbdFlvHlJ6DgsunibbWAJjzoS/SwTiZH1+9AVcoBpLWBLZeAAAAAElFTkSuQmCC" },
+        { "name": "Gemini", "url": "https://gemini.google.com/app", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSchg82fL5Ejsao7Li2X9yUmuyfjk2tYKUtEpfIpyg22A&s=10" },
+        { "name": "Cherri", "url": "https://behind.cryptparty.com/", "image": "https://raw.githubusercontent.com/Gohans-amazing-tutor/cherri/refs/heads/main/assets/img/fav.png" },
+        { "name": "Free Game 7", "url": "https://example.com/game7", "image": "image7.jpg" },
+        { "name": "Free Game 8", "url": "https://example.com/game8", "image": "image8.png" },
+        { "name": "Free Game 9", "url": "https://example.com/game9", "image": "image9.jpg" },
+        { "name": "Free Game 10", "url": "https://example.com/game10", "image": "image10.png" },
+        { "name": "Free Game 11", "url": "https://example.com/game11", "image": "image11.jpg" }
+      ],
+      "paid": [
+        { "name": "Figure cloud", "url": "https://figurecc.cine-softwares.workers.dev/", "image": "https://figurecc.cine-softwares.workers.dev/Cloud.jpg" },
+        { "name": "opium", "url": "https://s3.amazonaws.com/cleverlearning/index.html", "image": "https://raw.githubusercontent.com/SirDancelot123/Opium1/main/images/logo/opium-logo.png" },
+        { "name": "BeeZ UBG", "url": "https://beez-4d4.pages.dev/", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuTKThoDjFZvIRzE5UP8YghZIRSnrniQnFzMYehAy3eg&s=10" },
+        { "name": "Noah Tutoring", "url": "https://noahsamazingtutoringhelp.github.io/Noahs-Calculus-Tutor/", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGcJTQVYN7TeDiZtSzBw2-2VjdHlEnjuVgtINZQOD_ow&s=10" },
+        { "name": "Shuffle proxy", "url": "https://last-spirit-554.guesstheanimal.org/", "image": "file:///home/chronos/u-7f8f9d02b2c3ae011e16b87633aec0d242d46933/MyFiles/LINKS/shuffle.png" },
+        { "name": "Gn math", "url": "https://gohans-amazing-tutor.github.io/Gn-Maths/", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAV1BMVEX7JlH7DUX7AEH7HEz9vsb+3OD+2t/+4OT8X3j7ADz+5Oj7EUf6ACj////8a4L7ADX6ACP9sLr8Z377AED9pLD7ADD9rLf9p7P8dor+1tv8b4X7Fkn9lqVGuMFdAAAAi0lEQVR4AeTOhQGAIBBAUbrD7v3n9OxiA5/tVwD9CiYrisjm0RgXQCptOBDmVq0zfhWi32RntbkvdFnGaomihlGdP/+1jQ90u0TPl7caLrc/ibW6TUXa5S2o+kSEGrcFpSJUNQxDwZLR6ghc64fozRbNbUGrJlJUYgS2y2qcjARmGlHCSFbjvOGcegANpwklpfPYSAAAAABJRU5ErkJggg==" },
+        { "name": "Premium Game 7", "url": "https://example.com/premium7", "image": "premium7.png" },
+        { "name": "Premium Game 8", "url": "https://example.com/premium8", "image": "premium8.jpg" },
+        { "name": "Premium Game 9", "url": "https://example.com/premium9", "image": "premium9.png" },
+        { "name": "Premium Game 10", "url": "https://example.com/premium10", "image": "premium10.jpg" },
+        { "name": "Premium Game 11", "url": "https://example.com/premium11", "image": "premium11.png" }
+      ]
+    }
+    </script>
+
+    <!-- LOGIC SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // Intro Screen Fade Logic
+            setTimeout(() => {
+                const introScreen = document.getElementById('intro-screen');
+                const mainContent = document.getElementById('main-content');
+                introScreen.style.opacity = '0';
+                setTimeout(() => {
+                    introScreen.style.display = 'none';
+                    document.body.style.overflow = 'auto'; 
+                    mainContent.style.opacity = '1'; 
+                }, 1000);
+            }, 3000); 
+
+            // Read the JSON Data from the block above
+            const rawJSON = document.getElementById('gameDataJSON').textContent;
+            const gameData = JSON.parse(rawJSON);
+
+            // Game Player Elements
+            const gameOverlay = document.getElementById('game-player-overlay');
+            const gameIframe = document.getElementById('game-iframe');
+            const closeBtn = document.getElementById('close-game-btn');
+
+            // Function to launch the game inside the page
+            function launchGame(url) {
+                gameIframe.src = url; // Load the link into the iframe
+                gameOverlay.classList.add('active'); // Trigger the slide-up animation
+                document.body.style.overflow = 'hidden'; // Stop background scrolling
+            }
+
+            // Close button logic
+            closeBtn.addEventListener('click', () => {
+                gameOverlay.classList.remove('active'); // Slide it back down
+                document.body.style.overflow = 'auto'; // Restore background scrolling
+                
+                // Clear the iframe source after animation finishes so audio stops playing
+                setTimeout(() => {
+                    gameIframe.src = "";
+                }, 700);
+            });
+
+            // Building the game grid
+            const freeContainer = document.getElementById('free-games');
+            const paidContainer = document.getElementById('paid-games');
+
+            function createGameContent(game) {
+                const img = document.createElement('img');
+                img.src = game.image;
+                img.alt = game.name;
+                img.className = 'game-img';
+                
+                const title = document.createElement('div');
+                title.innerText = game.name;
+                
+                return { img, title };
+            }
+
+            // Loop through all Free Games
+            gameData.free.forEach(game => {
+                const box = document.createElement('div');
+                box.className = 'game-box';
+                
+                const { img, title } = createGameContent(game);
+                
+                box.appendChild(img);
+                box.appendChild(title);
+                
+                // Click logic for Free Games (Opens in overlay)
+                box.addEventListener('click', () => {
+                    launchGame(game.url);
+                });
+                
+                freeContainer.appendChild(box);
+            });
+
+            // Loop through all Paid Games
+            gameData.paid.forEach(game => {
+                const box = document.createElement('div');
+                box.className = 'game-box';
+                
+                const { img, title } = createGameContent(game);
+                
+                box.appendChild(img);
+                box.appendChild(title);
+                
+                // Click logic for Paid Games (Checks code, then opens in overlay)
+                box.addEventListener('click', () => {
+                    const userCode = prompt(`Enter the special code to play ${game.name}:`);
+                    
+                    if (userCode === "ilovesophia") {
+                        launchGame(game.url);
+                    } else if (userCode !== null) {
+                        alert("Access Denied. Incorrect code.");
+                    }
+                });
+                
+                paidContainer.appendChild(box);
+            });
+        });
+    </script>
+</body>
+</html>
